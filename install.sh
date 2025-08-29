@@ -72,7 +72,7 @@ fi
 echo "Java Setup: Bundling JDK 17 with application"
 BUNDLE_JDK=true
 
-# Check for arch-specific JAR availability first
+# Detect architecture for JAR selection
 JAR_ARCH="amd64"
 case $(uname -m) in
     aarch64) JAR_ARCH="arm64" ;;
@@ -83,11 +83,21 @@ esac
 
 JAR_FILE="briar_headless/jar-builds/jars/briar-headless-${JAR_ARCH}.jar"
 
+# Choose installation method
 if [[ -f "$JAR_FILE" ]]; then
-    echo "Found architecture-specific JAR for $JAR_ARCH"
-    BUILD_FROM_SOURCE=false
+    echo ""
+    echo "1) Use pre-packaged JAR (fast)"
+    echo "2) Build from source (slow, for paranoid users)"
+    read -p "Choose (1/2): " -r choice
+    if [[ "$choice" == "2" ]]; then
+        echo "WARNING: Building from source may take 10+ minutes on weak hardware"
+        BUILD_FROM_SOURCE=true
+    else
+        BUILD_FROM_SOURCE=false
+    fi
 else
-    echo "No convenience JAR available for $JAR_ARCH - will build from source"
+    echo "No pre-packaged JAR for $JAR_ARCH - building from source"
+    echo "WARNING: This may take 10+ minutes on weak hardware"
     BUILD_FROM_SOURCE=true
 fi
 

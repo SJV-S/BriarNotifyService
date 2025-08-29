@@ -19,11 +19,11 @@ venv/
 
 # Java/JDK (huge files)
 briar_headless/jdk17/*
-briar_headless/jar-builds/jars/
 *.jar
 
-# Keep build script
+# Keep build script and pre-packaged convenience JARs
 !briar_headless/jar-builds/build-jar.sh
+!briar_headless/jar-builds/jars/
 
 # OS
 .DS_Store
