@@ -18,8 +18,12 @@ venv/
 .claude/
 
 # Java/JDK (huge files)
-briar_headless/jdk17/
+briar_headless/jdk17/*
+briar_headless/jar-builds/jars/
 *.jar
+
+# Keep build script
+!briar_headless/jar-builds/build-jar.sh
 
 # OS
 .DS_Store
