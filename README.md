@@ -1,6 +1,6 @@
 # Briar Notify Service
 
-A notification service wrapper for the Briar headless API. Intended to run in the background and allow for integration with other apps using cli one-liners. Comes with a web GUI for managing contacts and basic message scheduling functionality. The goal is a foundation for sovereign and private notifications.
+A notification service wrapper for the Briar headless API. Intended to run in the background and allow for integration with other apps using cli one-liners. Comes with a web GUI for managing contacts and basic message scheduling functionality. The goal is a foundation for sovereign and private notifications without the VPN hassle.
 
 Built with help from Claude Code, but please don't assume that I "vibe coded" the whole thing with little effort. I can read code and this was a lot of work. The backend stuff in particular needed a lot of testing.
 
