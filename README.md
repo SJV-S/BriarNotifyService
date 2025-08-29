@@ -50,7 +50,7 @@ briar-notify send -c "Title" "Message"       # With confirmation
 ```bash
 # System monitoring
 briar-notify send "Alert" "Server $(hostname) is down"
-briar-notify send "Backup" "$(df -h / | awk 'NR==2{print $5}') disk usage"
+briar-notify send "Reminder" "Doctor appointment tomorrow at 14:00"
 ```
 
 ## Notes
