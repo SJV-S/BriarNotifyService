@@ -26,11 +26,8 @@ Feedback is much appreciated. I'm not a security expert. If the service can be i
 Right now, it's just a simple script. Will look into packaging for deb and rpm in the future if there's a need.
 
 ```bash
-# Clone the repository
 git clone https://github.com/SJV-S/BriarNotifyService.git
 cd BriarNotifyService
-
-# Run the installer
 ./install.sh 
 ```
 
