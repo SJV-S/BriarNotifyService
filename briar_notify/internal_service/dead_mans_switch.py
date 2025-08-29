@@ -142,6 +142,7 @@ class DeadMansSwitch:
                     self._send_confirmation(contact_id, "Failed to reset dead man's switch.")
                         
         except Exception as e:
+            pass
     
     def _disable_dead_mans_switch(self, reset_word: str, contact_id: str) -> bool:
         """Permanently disable a dead man's switch by deleting all associated messages.
@@ -263,7 +264,9 @@ class DeadMansSwitch:
             time.sleep(1)
             result = send_message(contact_id, message)
             if result:
+                pass
         except Exception as e:
+            pass
 
 
 # Global instance

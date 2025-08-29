@@ -48,6 +48,7 @@ class MessageScheduler:
         
         
         if timestamp <= current_time:
+            return None
         
         message_data = {
             'id': message_id,
@@ -120,6 +121,7 @@ class MessageScheduler:
             with open(self.messages_path, 'w') as f:
                 json.dump(remaining_messages, f, indent=2)
         else:
+            pass
     
     def _send_message(self, msg: Dict[str, Any]):
         try:
@@ -142,7 +144,9 @@ class MessageScheduler:
                 # Broadcast to all contacts
                 result = broadcast_message(message_text, DEFAULT_BRIAR_PORT)
                 if result.get('success'):
+                    pass
                 else:
+                    pass
             else:
                 # Send to specific recipients
                 contacts = get_contacts(DEFAULT_BRIAR_PORT)
@@ -167,9 +171,11 @@ class MessageScheduler:
                             delivered_count += 1
                 
                 if delivered_count > 0:
+                    pass
                 else:
-                    
+                    pass
         except Exception as e:
+            pass
     
     def _get_sleep_time(self) -> float:
         try:
@@ -199,7 +205,7 @@ class MessageScheduler:
             try:
                 with open(self.messages_path, 'r') as f:
                     messages = json.load(f)
-                except (FileNotFoundError, json.JSONDecodeError):
+            except (FileNotFoundError, json.JSONDecodeError):
                 return True
             
             # Filter out messages with matching reset word

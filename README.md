@@ -64,3 +64,4 @@ briar-notify send "Reminder" "Doctor appointment tomorrow at 14:00"
 
 This project builds upon the [Briar Project](https://briarproject.org/). Briar is developed by the Briar Project team and is licensed under the GNU General Public License v3.0. Thank you to the Briar developers for making this integration possible.
 
+

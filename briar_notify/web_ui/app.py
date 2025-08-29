@@ -72,6 +72,7 @@ def dashboard():
         try:
             os_files = os.listdir(str(BRIAR_NOTIFY_DIR))
         except Exception as e:
+            pass
     if not identity_name:
         return redirect('/identity-setup-required')
     
