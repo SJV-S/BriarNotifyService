@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Briar Notification Service</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="top-bar-left">
+                <h1 class="app-title">Briar Notification Service</h1>
+            </div>
+            <div class="top-bar-center">
+            </div>
+            <div class="top-bar-right">
+                <div class="identity-section">
+                    <span class="identity-label">{{ identity_name }}</span>
+                    <div class="identity-controls">
+                        <button class="icon-button copy" onclick="copyIdentity()" title="Copy Identity">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                <path d="M288 64C252.7 64 224 92.7 224 128L224 384C224 419.3 252.7 448 288 448L480 448C515.3 448 544 419.3 544 384L544 183.4C544 166 536.9 149.3 524.3 137.2L466.6 81.8C454.7 70.4 438.8 64 422.3 64L288 64zM160 192C124.7 192 96 220.7 96 256L96 512C96 547.3 124.7 576 160 576L352 576C387.3 576 416 547.3 416 512L416 496L352 496L352 512L160 512L160 256L176 256L176 192L160 192z"/>
+                            </svg>
+                        </button>
+                        <button class="icon-button qr" onclick="showQRModal()" title="Show QR Code">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                                <path d="M160 224L224 224L224 160L160 160L160 224zM96 144C96 117.5 117.5 96 144 96L240 96C266.5 96 288 117.5 288 144L288 240C288 266.5 266.5 288 240 288L144 288C117.5 288 96 266.5 96 240L96 144zM160 480L224 480L224 416L160 416L160 480zM96 400C96 373.5 117.5 352 144 352L240 352C266.5 352 288 373.5 288 400L288 496C288 522.5 266.5 544 240 544L144 544C117.5 544 96 522.5 96 496L96 400zM416 160L416 224L480 224L480 160L416 160zM400 96L496 96C522.5 96 544 117.5 544 144L544 240C544 266.5 522.5 288 496 288L400 288C373.5 288 352 266.5 352 240L352 144C352 117.5 373.5 96 400 96zM384 416C366.3 416 352 401.7 352 384C352 366.3 366.3 352 384 352C401.7 352 416 366.3 416 384C416 401.7 401.7 416 384 416zM384 480C401.7 480 416 494.3 416 512C416 529.7 401.7 544 384 544C366.3 544 352 529.7 352 512C352 494.3 366.3 480 384 480zM480 512C480 494.3 494.3 480 512 480C529.7 480 544 494.3 544 512C544 529.7 529.7 544 512 544C494.3 544 480 529.7 480 512zM512 416C494.3 416 480 401.7 480 384C480 366.3 494.3 352 512 352C529.7 352 544 366.3 544 384C544 401.7 529.7 416 512 416zM480 448C480 465.7 465.7 480 448 480C430.3 480 416 465.7 416 448C416 430.3 430.3 416 448 416C465.7 416 480 430.3 480 448z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Actions Section -->
+        <div class="actions-section">
+            <div class="action-buttons">
+                <button onclick="showAddContactModal()" class="action-button add">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                            <path d="M352 128C352 110.3 337.7 96 320 96C302.3 96 288 110.3 288 128L288 288L128 288C110.3 288 96 302.3 96 320C96 337.7 110.3 352 128 352L288 352L288 512C288 529.7 302.3 544 320 544C337.7 544 352 529.7 352 512L352 352L512 352C529.7 352 544 337.7 544 320C544 302.3 529.7 288 512 288L352 288L352 128z"/>
+                        </svg>
+                    </span>
+                    Add Contact
+                </button>
+                
+                <button onclick="showListContactsModal()" class="action-button list">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                            <path d="M160 64C124.7 64 96 92.7 96 128L96 512C96 547.3 124.7 576 160 576L448 576C483.3 576 512 547.3 512 512L512 128C512 92.7 483.3 64 448 64L160 64zM272 352L336 352C380.2 352 416 387.8 416 432C416 440.8 408.8 448 400 448L208 448C199.2 448 192 440.8 192 432C192 387.8 227.8 352 272 352zM248 256C248 225.1 273.1 200 304 200C334.9 200 360 225.1 360 256C360 286.9 334.9 312 304 312C273.1 312 248 286.9 248 256zM576 144C576 135.2 568.8 128 560 128C551.2 128 544 135.2 544 144L544 208C544 216.8 551.2 224 560 224C568.8 224 576 216.8 576 208L576 144zM576 272C576 263.2 568.8 256 560 256C551.2 256 544 263.2 544 272L544 336C544 344.8 551.2 352 560 352C568.8 352 576 344.8 576 336L576 272zM560 384C551.2 384 544 391.2 544 400L544 464C544 472.8 551.2 480 560 480C568.8 480 576 472.8 576 464L576 400C576 391.2 568.8 384 560 384z"/>
+                        </svg>
+                    </span>
+                    List Contacts
+                </button>
+                
+                <button onclick="showBroadcastModal()" class="action-button broadcast">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                            <path d="M119.9 75.5C108.6 68.6 93.8 72.3 86.9 83.6C62.1 124.6 47.9 172.7 47.9 224C47.9 275.3 62.1 323.4 86.9 364.4C93.8 375.7 108.5 379.4 119.9 372.5C131.3 365.6 134.9 350.9 128 339.5C107.7 305.9 96 266.3 96 224C96 181.7 107.7 142.1 128.1 108.4C135 97.1 131.3 82.3 120 75.4zM520 75.5C508.7 82.4 505 97.1 511.9 108.5C532.3 142.2 544 181.8 544 224.1C544 266.4 532.3 306 511.9 339.7C505 351 508.7 365.8 520 372.7C531.3 379.6 546.1 375.9 553 364.6C577.8 323.6 592 275.5 592 224.2C592 172.9 577.8 124.6 553 83.6C546.1 72.3 531.4 68.6 520 75.5zM352 279.4C371.1 268.3 384 247.7 384 224C384 188.7 355.3 160 320 160C284.7 160 256 188.7 256 224C256 247.7 268.9 268.4 288 279.4L288 544C288 561.7 302.3 576 320 576C337.7 576 352 561.7 352 544L352 279.4zM212.2 155C219.4 143.8 216.1 129 205 121.8C193.9 114.6 179 117.9 171.8 129C154.2 156.4 144 189 144 224C144 259 154.2 291.6 171.8 319C179 330.2 193.8 333.4 205 326.2C216.2 319 219.4 304.2 212.2 293C199.4 273.1 192 249.4 192 224C192 198.6 199.4 174.9 212.2 155zM468.2 129C461 117.8 446.2 114.6 435 121.8C423.8 129 420.6 143.8 427.8 155C440.6 174.9 448 198.6 448 224C448 249.4 440.6 273.1 427.8 293C420.6 304.2 423.9 319 435 326.2C446.1 333.4 461 330.1 468.2 319C485.8 291.6 496 259 496 224C496 189 485.8 156.4 468.2 129z"/>
+                        </svg>
+                    </span>
+                    Broadcast Message
+                </button>
+                
+                <button onclick="showScheduleModal()" class="action-button schedule">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                            <path d="M224 64C241.7 64 256 78.3 256 96L256 128L384 128L384 96C384 78.3 398.3 64 416 64C433.7 64 448 78.3 448 96L448 128L480 128C515.3 128 544 156.7 544 192L544 480C544 515.3 515.3 544 480 544L160 544C124.7 544 96 515.3 96 480L96 192C96 156.7 124.7 128 160 128L192 128L192 96C192 78.3 206.3 64 224 64zM160 304L160 336C160 344.8 167.2 352 176 352L208 352C216.8 352 224 344.8 224 336L224 304C224 295.2 216.8 288 208 288L176 288C167.2 288 160 295.2 160 304zM288 304L288 336C288 344.8 295.2 352 304 352L336 352C344.8 352 352 344.8 352 336L352 304C352 295.2 344.8 288 336 288L304 288C295.2 288 288 295.2 288 304zM432 288C423.2 288 416 295.2 416 304L416 336C416 344.8 423.2 352 432 352L464 352C472.8 352 480 344.8 480 336L480 304C480 295.2 472.8 288 464 288L432 288zM160 432L160 464C160 472.8 167.2 480 176 480L208 480C216.8 480 224 472.8 224 464L224 432C224 423.2 216.8 416 208 416L176 416C167.2 416 160 423.2 160 432zM304 416C295.2 416 288 423.2 288 432L288 464C288 472.8 295.2 480 304 480L336 480C344.8 480 352 472.8 352 464L352 432C352 423.2 344.8 416 336 416L304 416zM416 432L416 464C416 472.8 423.2 480 432 480L464 480C472.8 480 480 472.8 480 464L480 432C480 423.2 472.8 416 464 416L432 416C423.2 416 416 423.2 416 432z"/>
+                        </svg>
+                    </span>
+                    Show Schedule
+                </button>
+                
+                
+                <button onclick="showDeleteIdentityModal()" class="action-button danger">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                            <path d="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z"/>
+                        </svg>
+                    </span>
+                    Delete Identity
+                </button>
+            </div>
+        </div>
+        
+        <!-- Hidden identity display for copying -->
+        <div class="identity-display" id="identityDisplay" style="display: none;">{{ identity }}</div>
+    </div>
+
+    <!-- Add Contact Modal -->
+    <div id="addContactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Contact</h3>
+                <button class="close-button" onclick="hideAddContactModal()">×</button>
+            </div>
+            <form id="addContactForm">
+                <div class="form-group">
+                    <label class="form-label" for="briar_link">Briar Link:</label>
+                    <input type="text" id="briar_link" name="briar_link" class="form-input" placeholder="briar://..." required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="alias">Contact Name:</label>
+                    <input type="text" id="alias" name="alias" class="form-input" placeholder="Enter contact name" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="button primary">Add Contact</button>
+                </div>
+            </form>
+            <div id="addContactResult" class="result-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- List Contacts Modal -->
+    <div id="listContactsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Contacts</h3>
+                <button class="close-button" onclick="hideListContactsModal()">×</button>
+            </div>
+            <div id="contactsLoading" style="text-align: center; padding: 20px;">Loading contacts...</div>
+            <div id="contactsList" style="display: none;">
+                <div id="contactsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Broadcast Message Modal -->
+    <div id="broadcastModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Broadcast Message</h3>
+                <button class="close-button" onclick="hideBroadcastModal()">×</button>
+            </div>
+            <form id="broadcastForm">
+                <div class="form-group">
+                    <label class="form-label" for="broadcast_title">Title:</label>
+                    <input type="text" id="broadcast_title" name="broadcast_title" class="form-input" placeholder="Enter message title..." required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="broadcast_message">Message:</label>
+                    <textarea id="broadcast_message" name="broadcast_message" class="form-textarea" placeholder="Enter your message to broadcast to all contacts..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">When to send:</label>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="radio-container">
+                            <label class="radio-clickable" for="send_now">
+                                <input type="radio" id="send_now" name="send_timing" value="now" checked onchange="toggleScheduleOptions()">
+                                <span>Send now</span>
+                            </label>
+                        </div>
+                        <div class="radio-container">
+                            <label class="radio-clickable" for="send_scheduled">
+                                <input type="radio" id="send_scheduled" name="send_timing" value="scheduled" onchange="toggleScheduleOptions()">
+                                <span>Schedule</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div id="scheduleOptions" class="form-group" style="display: none;">
+                    <label class="form-label">Schedule type:</label>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+                        <div class="radio-container">
+                            <label class="radio-clickable" for="schedule_specific">
+                                <input type="radio" id="schedule_specific" name="schedule_type" value="specific" checked onchange="toggleScheduleInputs()">
+                                <span>Specific date and time</span>
+                            </label>
+                        </div>
+                        <div class="radio-container">
+                            <label class="radio-clickable" for="schedule_relative">
+                                <input type="radio" id="schedule_relative" name="schedule_type" value="relative" onchange="toggleScheduleInputs()">
+                                <span>Relative time from now</span>
+                            </label>
+                        </div>
+                        <div class="radio-container">
+                            <label class="radio-clickable" for="schedule_deadmans">
+                                <input type="radio" id="schedule_deadmans" name="schedule_type" value="dead_mans_switch" onchange="toggleScheduleInputs()">
+                                <span>Dead man's switch</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div id="specificTimeInputs" style="display: block;">
+                        <div style="display: flex; gap: 10px;">
+                            <input type="date" id="schedule_date" name="schedule_date" class="form-input" style="flex: 1;">
+                            <div style="display: flex; gap: 5px; flex: 1;">
+                                <input type="number" id="schedule_hour" class="form-input" placeholder="HH" min="0" max="23" style="flex: 1;">
+                                <span style="align-self: center;">:</span>
+                                <input type="number" id="schedule_minute" class="form-input" placeholder="MM" min="0" max="59" style="flex: 1;">
+                            </div>
+                        </div>
+                        <small style="color: #666; font-size: 12px;">Time uses 24-hour format.</small>
+                    </div>
+                    <div id="relativeTimeInputs" style="display: none;">
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span>Send in</span>
+                            <input type="number" id="relative_amount" class="form-input" placeholder="30" min="1" style="width: 80px;">
+                            <select id="relative_unit" class="form-input" style="width: 120px;">
+                                <option value="minutes">minutes</option>
+                                <option value="hours">hours</option>
+                                <option value="days">days</option>
+                                <option value="weeks">weeks</option>
+                                <option value="months">months</option>
+                                <option value="years">years</option>
+                            </select>
+                            <span>from now</span>
+                        </div>
+                    </div>
+                    <div id="deadMansSwitchInputs" style="display: none;">
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <span>Trigger in</span>
+                                <input type="number" id="dms_amount" class="form-input" placeholder="1" min="1" style="width: 80px;">
+                                <select id="dms_unit" class="form-input" style="width: 120px;">
+                                    <option value="hours">hours</option>
+                                    <option value="days">days</option>
+                                    <option value="weeks">weeks</option>
+                                    <option value="months">months</option>
+                                    <option value="years">years</option>
+                                </select>
+                                <span>from now</span>
+                            </div>
+                            <div>
+                                <label class="form-label" for="reset_word">Reset word/phrase:</label>
+                                <input type="text" id="reset_word" name="reset_word" class="form-input" placeholder="Enter word or phrase to reset the switch...">
+                                <small style="color: #666; font-size: 12px;">Reply with this word to reset the timer.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="button primary" id="broadcastSubmitBtn">Schedule Broadcast</button>
+                </div>
+            </form>
+            <div id="broadcastResult" class="result-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Identity QR Code</h3>
+                <button class="close-button" onclick="hideQRModal()">×</button>
+            </div>
+            <div class="qr-display">
+                <div class="qr-code" id="qrCodeContainer">
+                    [QR Code will be generated here]
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Identity Modal -->
+    <div id="deleteIdentityModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete Identity</h3>
+                <button class="close-button" onclick="hideDeleteIdentityModal()">×</button>
+            </div>
+            <div class="delete-warning">
+                <p><strong>This action cannot be undone!</strong></p>
+                <p>This will permanently delete your Briar identity and all associated data including:</p>
+                <ul>
+                    <li>Your identity and private keys</li>
+                    <li>All contacts and conversations</li>
+                    <li>All scheduled messages</li>
+                    <li>All application data</li>
+                </ul>
+                <p>To confirm deletion, type <strong>delete</strong> in the field below:</p>
+            </div>
+            <form id="deleteIdentityForm">
+                <div class="form-group">
+                    <input type="text" id="deleteConfirmation" name="deleteConfirmation" class="form-input" placeholder="Type 'delete' to confirm" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="button danger" id="deleteIdentityBtn" disabled>Delete Identity</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Modal -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content schedule-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Scheduled Messages</h3>
+                <button class="close-button" onclick="hideScheduleModal()">×</button>
+            </div>
+            <div id="scheduleLoading" style="text-align: center; padding: 20px;">Loading scheduled messages...</div>
+            <div id="scheduleList" style="display: none;">
+                <div class="schedule-hint" id="scheduleHint">Hover over icon to display full message.</div>
+                <div class="schedule-header">
+                    <div class="schedule-cell schedule-icon-cell">Type</div>
+                    <div class="schedule-cell schedule-date-cell">Date</div>
+                    <div class="schedule-cell schedule-time-cell">Time</div>
+                    <div class="schedule-cell schedule-remaining-cell">Remaining</div>
+                    <div class="schedule-cell schedule-title-cell">Title</div>
+                </div>
+                <div id="scheduleContainer"></div>
+                <div class="schedule-actions">
+                    <button type="button" class="button danger schedule-delete-btn disabled" id="deleteSelectedBtn" onclick="deleteSelectedMessages()" disabled>
+                        <span class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" style="width: 16px; height: 16px; fill: currentColor;">
+                                <path d="M232.7 69.9L224 96L128 96C110.3 96 96 110.3 96 128C96 145.7 110.3 160 128 160L512 160C529.7 160 544 145.7 544 128C544 110.3 529.7 96 512 96L416 96L407.3 69.9C402.9 56.8 390.7 48 376.9 48L263.1 48C249.3 48 237.1 56.8 232.7 69.9zM512 208L128 208L149.1 531.1C150.7 556.4 171.7 576 197 576L443 576C468.3 576 489.3 556.4 490.9 531.1L512 208z"/>
+                            </svg>
+                        </span>
+                        Delete Selected
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

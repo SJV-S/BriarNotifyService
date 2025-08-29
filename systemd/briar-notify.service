@@ -1,0 +1,32 @@
+[Unit]
+Description=Briar Notify Service - Secure messaging notification service
+After=network.target
+Wants=network.target
+
+[Service]
+Type=exec
+User=owl
+Group=owl
+WorkingDirectory=/opt/briar-notify
+
+# Environment
+Environment=INSTALL_DIR=/opt/briar-notify
+Environment=FLASK_ENV=production
+Environment=PYTHONPATH=/opt/briar-notify/briar_notify
+
+# Service management
+ExecStart=/opt/briar-notify/systemd/systemd-launch.sh
+ExecStop=/opt/briar-notify/systemd/systemd-stop.sh
+
+# Restart policy for reliability
+Restart=always
+RestartSec=10
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+# Basic resource limits
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

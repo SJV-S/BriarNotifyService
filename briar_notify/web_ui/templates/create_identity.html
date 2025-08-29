@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Identity - Briar Notify</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Create Briar Identity</h1>
+        
+        <div class="security-notice">
+            <p><strong>Security Note:</strong> Password will be automatically generated and stored securely.</p>
+        </div>
+
+        <form method="POST" action="/create-identity" class="identity-form">
+            <div class="form-group">
+                <label for="nickname">Nickname:</label>
+                <input type="text" id="nickname" name="nickname" required maxlength="50" 
+                       placeholder="Enter your nickname" autocomplete="off">
+                <small class="help-text">This will be your display name in Briar</small>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Create Identity</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

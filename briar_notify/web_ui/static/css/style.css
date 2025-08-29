@@ -1,0 +1,1240 @@
+/* Minimalist 2D Interface Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.5;
+    background: #ffffff;
+    color: #1a1a1a;
+    font-size: clamp(14px, 2.5vw, 16px);
+}
+
+/* Top Bar */
+.top-bar {
+    background: #f8f9fa;
+    border-bottom: 2px solid #e0e0e0;
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.top-bar-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.top-bar-left {
+    flex-shrink: 0;
+}
+
+.top-bar-center {
+    flex: 1;
+    text-align: center;
+}
+
+.top-bar-right {
+    flex-shrink: 0;
+}
+
+.app-title {
+    font-size: clamp(16px, 4vw, 18px);
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.contact-status {
+    font-weight: 500;
+    color: #666666;
+    font-size: 14px;
+}
+
+/* Layout Structure */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 16px;
+}
+
+/* Typography Hierarchy */
+h1 {
+    font-size: clamp(16px, 4vw, 18px);
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #1a1a1a;
+}
+
+h2 {
+    font-size: clamp(14px, 3.5vw, 16px);
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: #333333;
+}
+
+/* Actions Section */
+.actions-section {
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-weight: 500;
+    text-decoration: none;
+    color: #1a1a1a;
+    width: 100%;
+    justify-content: flex-start;
+    font-size: clamp(14px, 3vw, 16px);
+    min-height: 48px;
+}
+
+.action-button:hover {
+    border-color: #3b82f6;
+    background: #f8faff;
+}
+
+.action-button .icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #3b82f6;
+    font-weight: normal;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.action-button .icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+
+.identity-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.identity-label {
+    font-weight: 500;
+    color: #1a1a1a;
+    font-size: 14px;
+}
+
+.identity-controls {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.icon-button {
+    min-width: 40px;
+    min-height: 40px;
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    font-size: 14px;
+    color: #3b82f6;
+}
+
+.icon-button:hover {
+    border-color: #3b82f6;
+    background: #f8faff;
+}
+
+.icon-button svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+/* Identity Display */
+.identity-display {
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 12px;
+    color: #666666;
+    background: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    margin-top: 8px;
+    word-break: break-all;
+    display: none;
+}
+
+
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: none;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 20px;
+    width: 95%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.close-button {
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #666666;
+    transition: all 0.15s ease;
+}
+
+.close-button:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: clamp(14px, 3vw, 16px);
+    transition: border-color 0.15s ease;
+    min-height: 44px;
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.button {
+    padding: 12px 20px;
+    border: 2px solid;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: #ffffff;
+    font-size: clamp(14px, 3vw, 16px);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button.primary {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+.button.primary:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.button.secondary {
+    border-color: #e0e0e0;
+    color: #666666;
+}
+
+.button.secondary:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
+.button.danger {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #ffffff;
+}
+
+.button.danger:hover:not(:disabled) {
+    background: #dc2626;
+    border-color: #dc2626;
+}
+
+.button.danger:disabled {
+    background: #9ca3af;
+    border-color: #9ca3af;
+    color: #ffffff;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* QR Code Display */
+.qr-display {
+    text-align: center;
+    padding: 20px;
+}
+
+.qr-code {
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+/* Contact List */
+.contact-item {
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    transition: border-color 0.15s ease;
+}
+
+.contact-item:hover {
+    border-color: #3b82f6;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.contact-name {
+    font-weight: 500;
+    color: #1a1a1a;
+    font-size: 14px;
+}
+
+.contact-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contact-status {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.delete-contact-btn {
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #ef4444;
+    transition: all 0.15s ease;
+}
+
+.delete-contact-btn:hover {
+    background: #fef2f2;
+    border-color: #ef4444;
+}
+
+/* Status Indicators */
+.status-online {
+    color: #3b82f6;
+}
+
+.status-offline {
+    color: #1a1a1a;
+}
+
+/* Results/Messages */
+.result-message {
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-top: 16px;
+    font-weight: 500;
+}
+
+/* Delete Warning */
+.delete-warning {
+    background: #fef2f2;
+    border: 2px solid #fecaca;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #991b1b;
+}
+
+.delete-warning p {
+    margin-bottom: 12px;
+}
+
+.delete-warning p:last-child {
+    margin-bottom: 0;
+}
+
+.delete-warning ul {
+    margin: 12px 0;
+    padding-left: 20px;
+}
+
+.delete-warning li {
+    margin-bottom: 4px;
+}
+
+.delete-warning strong {
+    font-weight: 600;
+}
+
+.result-success {
+    background: #f8faff;
+    border: 2px solid #3b82f6;
+    color: #1a1a1a;
+}
+
+.result-error {
+    background: #f8f9fa;
+    border: 2px solid #1a1a1a;
+    color: #1a1a1a;
+}
+
+/* Create/Start Identity Pages */
+.auth-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 24px;
+    background: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.auth-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.auth-form .form-group:last-of-type {
+    margin-bottom: 24px;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Schedule Modal Styles */
+.schedule-modal-content {
+    max-width: 800px;
+    width: 90%;
+}
+
+#scheduleContainer {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.schedule-hint {
+    font-size: 12px;
+    color: #666666;
+    text-align: center;
+    margin-bottom: 16px;
+    font-style: italic;
+}
+
+.schedule-header {
+    display: grid;
+    grid-template-columns: 60px 100px 80px 120px 1fr;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 12px;
+    background-color: #e2e8f0;
+    border: 2px solid #e2e8f0;
+    border-radius: 4px 4px 0 0;
+    font-weight: normal;
+    font-size: 12px;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    overflow-x: auto;
+}
+
+.schedule-item {
+    border: 2px solid #e0e0e0;
+    border-top: none;
+    transition: all 0.15s ease;
+    cursor: pointer;
+}
+
+.schedule-item:first-child {
+    border-top: 1px solid #e0e0e0;
+}
+
+.schedule-item:last-child {
+    border-radius: 0 0 4px 4px;
+}
+
+.schedule-item:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.schedule-item:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Dark mode zebra striping fix */
+@media (prefers-color-scheme: dark) {
+    .schedule-item:nth-child(even) {
+        background-color: #404040;
+    }
+    
+    .schedule-item:nth-child(odd) {
+        background-color: #2d2d2d;
+    }
+    
+    .schedule-item:hover {
+        background-color: #4a5568 !important;
+    }
+    
+    .schedule-item.selected {
+        background-color: #2b6cb0 !important;
+    }
+}
+
+.schedule-item:hover {
+    background-color: #e3f2fd !important;
+}
+
+.schedule-item.selected {
+    background-color: #bbdefb !important;
+}
+
+.schedule-row {
+    display: grid;
+    grid-template-columns: 60px 100px 80px 120px 1fr;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 12px;
+    cursor: pointer;
+    overflow-x: auto;
+}
+
+.schedule-cell {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #000000;
+    font-weight: normal;
+}
+
+.schedule-icon-cell {
+    justify-content: center;
+}
+
+.schedule-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.schedule-icon.deadman {
+    background: transparent;
+    color: #000000;
+}
+
+.schedule-icon.broadcast {
+    background: transparent;
+    color: #000000;
+}
+
+.schedule-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.schedule-date-cell {
+    justify-content: center;
+}
+
+.schedule-time-cell {
+    justify-content: center;
+}
+
+.schedule-remaining-cell {
+    color: #000000;
+    justify-content: center;
+}
+
+.schedule-title-cell {
+    justify-content: flex-start;
+}
+
+.schedule-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.schedule-delete-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.schedule-delete-btn.disabled {
+    background: #9ca3af;
+    border-color: #9ca3af;
+    color: #ffffff;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.schedule-delete-btn .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Small screens and mobile */
+@media (max-width: 480px) {
+    .top-bar {
+        padding: 12px 0;
+    }
+    
+    .top-bar-content {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+        padding: 0 12px;
+    }
+    
+    .top-bar-center {
+        order: -1;
+    }
+    
+    .app-title {
+        font-size: 16px;
+    }
+    
+    .container {
+        padding: 16px 12px;
+    }
+    
+    .actions-section {
+        padding: 12px;
+    }
+    
+    .action-button {
+        padding: 16px 12px;
+        font-size: 15px;
+        gap: 8px;
+    }
+    
+    .action-button .icon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .modal-content {
+        width: 100%;
+        height: 100%;
+        padding: 16px;
+        margin: 0;
+        max-height: 100vh;
+        max-width: 100%;
+        border-radius: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: none;
+    }
+    
+    .modal-header {
+        margin-bottom: 16px;
+    }
+    
+    .form-group {
+        margin-bottom: 16px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 16px;
+    }
+    
+    .form-actions .button {
+        width: 100%;
+    }
+    
+    .schedule-modal-content {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        max-height: 100vh;
+        max-width: 100%;
+        padding: 12px;
+        border-radius: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: none;
+    }
+    
+    .schedule-header {
+        display: none;
+    }
+    
+    .schedule-hint {
+        font-size: 11px;
+        margin-bottom: 12px;
+    }
+    
+    .schedule-row {
+        grid-template-columns: 40px 1fr;
+        grid-template-rows: auto auto auto auto;
+        gap: 4px;
+        padding: 12px 8px;
+    }
+    
+    .schedule-icon-cell {
+        grid-row: 1 / 5;
+        align-self: center;
+    }
+    
+    .schedule-date-cell, .schedule-time-cell, .schedule-remaining-cell {
+        grid-column: 2;
+        justify-content: flex-start;
+        font-size: 12px;
+        line-height: 1.3;
+    }
+    
+    .schedule-title-cell {
+        grid-column: 2;
+        justify-content: flex-start;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.3;
+        margin-top: 2px;
+    }
+    
+    /* Add labels for mobile view */
+    .schedule-date-cell::before {
+        content: "Date: ";
+        font-weight: 600;
+        color: #666;
+    }
+    
+    .schedule-time-cell::before {
+        content: "Time: ";
+        font-weight: 600;
+        color: #666;
+    }
+    
+    .schedule-remaining-cell::before {
+        content: "Remaining: ";
+        font-weight: 600;
+        color: #666;
+    }
+    
+    /* Dark mode labels */
+    @media (prefers-color-scheme: dark) {
+        .schedule-date-cell::before,
+        .schedule-time-cell::before,
+        .schedule-remaining-cell::before {
+            color: #ccc;
+        }
+    }
+    
+    .schedule-actions {
+        flex-direction: column-reverse;
+        gap: 8px;
+        margin-top: 16px;
+    }
+    
+    .schedule-delete-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .contact-item {
+        padding: 12px;
+    }
+    
+    .contact-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .contact-right {
+        align-self: flex-end;
+    }
+    
+    .identity-section {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+    
+    .identity-label {
+        font-size: 13px;
+    }
+    
+    /* Form improvements for mobile */
+    .auth-container {
+        margin: 20px auto;
+        padding: 16px;
+        width: 95%;
+        max-width: none;
+    }
+    
+    .auth-title {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+    
+    /* Better spacing for form groups on mobile */
+    #scheduleOptions {
+        margin-top: 12px;
+    }
+    
+    #scheduleOptions > div {
+        margin-bottom: 12px;
+    }
+    
+    /* Improve radio button layouts */
+    input[type="radio"] {
+        min-width: 20px;
+        min-height: 20px;
+        margin-right: 8px;
+        cursor: pointer;
+    }
+    
+    /* Radio button label styling */
+    .radio-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 8px 0;
+    }
+    
+    /* Prevent full row clicking by making only the radio and text clickable */
+    .radio-container {
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .radio-clickable {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    
+    /* Better select and number input sizing */
+    select.form-input, input[type="number"].form-input {
+        min-height: 44px;
+        -webkit-appearance: none;
+        -moz-appearance: textfield;
+    }
+    
+    /* Improve datetime inputs */
+    input[type="date"].form-input {
+        min-height: 44px;
+        -webkit-appearance: none;
+    }
+    
+    /* Stack time inputs vertically on very small screens */
+    @media (max-width: 320px) {
+        #specificTimeInputs > div {
+            flex-direction: column;
+        }
+        
+        #relativeTimeInputs > div,
+        #deadMansSwitchInputs > div:first-child {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 8px;
+        }
+        
+        #relativeTimeInputs span,
+        #deadMansSwitchInputs span {
+            text-align: center;
+            font-size: 14px;
+        }
+    }
+}
+
+/* Medium screens and tablets */
+@media (min-width: 481px) and (max-width: 768px) {
+    .top-bar-content {
+        padding: 0 16px;
+        gap: 16px;
+    }
+    
+    .container {
+        padding: 20px 16px;
+    }
+    
+    .actions-section {
+        padding: 16px;
+    }
+    
+    .action-button {
+        font-size: 15px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 24px;
+    }
+    
+    .schedule-modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .schedule-header {
+        grid-template-columns: 60px 1fr 1fr 1fr 2fr;
+        font-size: 11px;
+        padding: 10px 12px;
+    }
+    
+    .schedule-row {
+        grid-template-columns: 60px 1fr 1fr 1fr 2fr;
+        padding: 10px 12px;
+    }
+    
+    .schedule-cell {
+        font-size: 13px;
+    }
+}
+
+/* Large screens adjustments */
+@media (min-width: 1201px) {
+    .container {
+        padding: 40px 20px;
+    }
+    
+    .actions-section {
+        padding: 24px;
+    }
+    
+    .action-button {
+        max-width: 320px;
+    }
+}
+
+/* Touch and accessibility improvements */
+@media (hover: none) and (pointer: coarse) {
+    /* Increase touch targets for touch devices */
+    .action-button {
+        min-height: 52px;
+        padding: 16px;
+    }
+    
+    .icon-button {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .button {
+        min-height: 48px;
+        padding: 14px 20px;
+    }
+    
+    .form-input, .form-textarea {
+        min-height: 48px;
+        padding: 14px 16px;
+    }
+    
+    /* Bigger radio buttons for touch */
+    input[type="radio"] {
+        min-width: 24px;
+        min-height: 24px;
+    }
+    
+    /* Bigger close buttons for touch */
+    .close-button {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    /* Remove hover effects on touch devices */
+    .action-button:hover,
+    .icon-button:hover,
+    .button:hover,
+    .contact-item:hover,
+    .schedule-item:hover {
+        border-color: inherit;
+        background: inherit;
+        color: inherit;
+    }
+}
+
+/* Dark mode support for better mobile experience */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #1a1a1a;
+        color: #ffffff;
+    }
+    
+    .top-bar {
+        background: #2d2d2d;
+        border-bottom-color: #404040;
+    }
+    
+    .app-title {
+        color: #ffffff;
+    }
+    
+    .identity-label {
+        color: #ffffff;
+    }
+    
+    .contact-status {
+        color: #cccccc;
+    }
+    
+    .actions-section {
+        background: #2d2d2d;
+        border-color: #404040;
+    }
+    
+    .action-button, .icon-button, .button {
+        background: #2d2d2d;
+        border-color: #404040;
+        color: #ffffff;
+    }
+    
+    .modal-content {
+        background: #2d2d2d;
+        border-color: #404040;
+        color: #ffffff;
+    }
+    
+    .modal-title {
+        color: #ffffff;
+    }
+    
+    .form-label {
+        color: #ffffff;
+    }
+    
+    .form-input, .form-textarea {
+        background: #1a1a1a;
+        border-color: #404040;
+        color: #ffffff;
+    }
+    
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+        color: #888888;
+    }
+    
+    .contact-item, .schedule-item {
+        border-color: #404040;
+        background: #2d2d2d;
+    }
+    
+    .contact-name {
+        color: #ffffff;
+    }
+    
+    .schedule-header {
+        background-color: #404040;
+        border-color: #404040;
+        color: #ffffff;
+    }
+    
+    .schedule-cell {
+        color: #ffffff;
+    }
+    
+    .schedule-remaining-cell {
+        color: #ffffff;
+    }
+    
+    h1, h2 {
+        color: #ffffff;
+    }
+    
+    .auth-title {
+        color: #ffffff;
+    }
+    
+    .auth-container {
+        background: #2d2d2d;
+        border-color: #404040;
+    }
+    
+    .identity-display {
+        background: #2d2d2d;
+        border-color: #404040;
+        color: #cccccc;
+    }
+    
+    .result-message {
+        background: #2d2d2d;
+        color: #ffffff;
+    }
+    
+    .result-success {
+        background: #1a3d1a;
+        border-color: #2d5a2d;
+        color: #ffffff;
+    }
+    
+    .result-error {
+        background: #3d1a1a;
+        border-color: #5a2d2d;
+        color: #ffffff;
+    }
+    
+    .delete-warning {
+        background: #3d2d2d;
+        border-color: #5a4040;
+        color: #ffffff;
+    }
+    
+    .close-button {
+        background: #2d2d2d;
+        border-color: #404040;
+        color: #cccccc;
+    }
+    
+    .close-button:hover {
+        border-color: #ef4444;
+        color: #ef4444;
+    }
+    
+    .schedule-hint {
+        color: #cccccc;
+    }
+    
+    /* Fix QR code container for dark mode */
+    .qr-code {
+        background: #ffffff;
+        border-color: #404040;
+    }
+    
+    /* Ensure icons remain visible */
+    .action-button .icon,
+    .icon-button {
+        color: #3b82f6;
+    }
+}
