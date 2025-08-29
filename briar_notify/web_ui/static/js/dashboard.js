@@ -5,7 +5,6 @@ function copyIdentity() {
     const identity = identityElement ? identityElement.textContent.trim() : '';
     
     if (!identity) {
-        console.error('No identity found to copy');
         showToastFeedback('No identity found to copy', true);
         return;
     }
@@ -30,7 +29,6 @@ function copyIdentity() {
             throw new Error('execCommand failed');
         }
     } catch (err) {
-        console.error('Copy failed:', err);
         showToastFeedback('Copy failed', true);
     } finally {
         document.body.removeChild(textArea);

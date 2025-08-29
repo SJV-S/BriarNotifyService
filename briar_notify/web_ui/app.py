@@ -57,39 +57,24 @@ def after_request(response):
 
 @app.route('/')
 def dashboard():
-    print("DEBUG: Dashboard accessed")
     
     # Fast check - if identity doesn't exist, redirect immediately
     identity_name = get_identity_name()
-    print(f"DEBUG: Identity name: {identity_name}")
-    print(f"DEBUG: BRIAR_NOTIFY_DIR: {BRIAR_NOTIFY_DIR}")
-    print(f"DEBUG: BRIAR_NOTIFY_DIR resolved: {BRIAR_NOTIFY_DIR.resolve()}")
-    print(f"DEBUG: Directory exists: {BRIAR_NOTIFY_DIR.exists()}")
     from pathlib import Path
-    print(f"DEBUG: Path.home(): {Path.home()}")
     import os
-    print(f"DEBUG: Current user: {os.getuid()}")
-    print(f"DEBUG: Current working dir: {os.getcwd()}")
     
     # Try direct filesystem calls
     import os.path
-    print(f"DEBUG: os.path.exists(): {os.path.exists(str(BRIAR_NOTIFY_DIR))}")
-    print(f"DEBUG: os.path.isdir(): {os.path.isdir(str(BRIAR_NOTIFY_DIR))}")
     
     if BRIAR_NOTIFY_DIR.exists():
         hash_files = list(BRIAR_NOTIFY_DIR.glob('*.hash'))
-        print(f"DEBUG: Hash files found: {hash_files}")
         # Try with os.listdir too
         try:
             os_files = os.listdir(str(BRIAR_NOTIFY_DIR))
-            print(f"DEBUG: os.listdir files: {os_files}")
         except Exception as e:
-            print(f"DEBUG: os.listdir failed: {e}")
     if not identity_name:
-        print("DEBUG: No identity found, redirecting to create page")
         return redirect('/identity-setup-required')
     
-    print("DEBUG: Identity exists, continuing with full dashboard logic")
     
     # Load system password into memory if not already loaded
     if password_manager.identity_password is None:
@@ -535,7 +520,6 @@ if __name__ == '__main__':
     import sys
     
     def signal_handler(signum, frame):
-        print(f"Received signal {signum}, shutting down gracefully...")
         _cleanup_scheduler()
         sys.exit(0)
     
@@ -544,5 +528,4 @@ if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal_handler)
     
     # Run the application
-    print("Starting Briar Notify Web UI")
     app.run(host='0.0.0.0', port=DEFAULT_WEB_UI_PORT, debug=False)

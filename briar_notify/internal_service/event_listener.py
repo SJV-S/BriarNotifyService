@@ -85,7 +85,6 @@ class BriarEventListener:
                 dms = get_dead_mans_switch()
                 dms.process_incoming_message(contact_id, text, full)
             except Exception as e:
-                print(f"[ERROR] Dead man's switch processing failed: {e}")
 
     def on_conversation_event(self, data):
         # handle non-text or group events if needed

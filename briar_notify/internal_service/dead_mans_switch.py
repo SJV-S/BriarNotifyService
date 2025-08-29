@@ -11,11 +11,6 @@ from internal_service.briar_service import send_message, get_contacts
 from internal_service.service_config import BRIAR_NOTIFY_DIR
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-if not logger.handlers:
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
-    logger.addHandler(handler)
 
 
 class DeadMansSwitch:
@@ -35,10 +30,6 @@ class DeadMansSwitch:
         Returns:
             bool: True if successfully scheduled, False otherwise
         """
-        logger.info(f"*** DMS: SCHEDULING DEAD MAN'S SWITCH ***")
-        logger.info("  Reset word: [REDACTED]")
-        logger.info(f"  Interval: {interval_seconds} seconds")
-        logger.info(f"  Contact ID: {contact_id}")
         
         try:
             current_time = datetime.now()
@@ -62,7 +53,6 @@ class DeadMansSwitch:
                     reset_word=reset_word.lower(),
                     original_interval_seconds=interval_seconds
                 )
-                logger.info(f"  Scheduled 24h warning: {warning_24h_id}")
             
             # Schedule 2-hour warning (only if interval > 2 hours)
             if interval_seconds > 2 * 3600:
@@ -75,7 +65,6 @@ class DeadMansSwitch:
                     reset_word=reset_word.lower(),
                     original_interval_seconds=interval_seconds
                 )
-                logger.info(f"  Scheduled 2h warning: {warning_2h_id}")
             
             # Schedule main message
             main_id = self.scheduler.add_message(
@@ -87,9 +76,6 @@ class DeadMansSwitch:
                 reset_word=reset_word.lower(),
                 original_interval_seconds=interval_seconds
             )
-            logger.info(f"  Scheduled main message: {main_id}")
-            
-            logger.info("*** DMS: DEAD MAN'S SWITCH SCHEDULED SUCCESSFULLY ***")
             return True
             
         except Exception as e:
@@ -104,13 +90,8 @@ class DeadMansSwitch:
             message_text: The text content of the message
             full_message_data: Complete message data for debugging
         """
-        logger.info(f"*** DMS: PROCESSING INCOMING MESSAGE ***")
-        logger.info(f"[DMS DEBUG] Full message data: {full_message_data}")
-        logger.info(f"[DMS DEBUG] Contact ID: {contact_id}")
-        logger.info(f"[DMS DEBUG] Message text: '{message_text}'")
         
         if not message_text:
-            logger.info("  No message text - skipping DMS processing")
             return
         
         message_lower = message_text.lower().strip()
@@ -122,9 +103,7 @@ class DeadMansSwitch:
             try:
                 with open(messages_path, 'r') as f:
                     messages = json.load(f)
-                logger.info(f"  Loaded {len(messages)} messages from database")
             except (FileNotFoundError, json.JSONDecodeError):
-                logger.info("  No scheduled messages found")
                 return
             
             # Get all unique reset words from active dead man's switch messages
@@ -136,7 +115,6 @@ class DeadMansSwitch:
                         active_reset_words[reset_word] = msg.get('original_interval_seconds', 0)
             
             if not active_reset_words:
-                logger.info("  No active dead man's switch reset words found")
                 return
             
             # Check if incoming message contains any active reset words
@@ -146,26 +124,21 @@ class DeadMansSwitch:
                 if reset_word in message_lower:
                     found_reset_word = reset_word
                     original_interval = interval
-                    logger.info("  Found matching reset word: [REDACTED]")
                     break
             
             if not found_reset_word:
-                logger.info("  No matching reset words found")
                 return
             
             # Process the single matching reset word
-            logger.info("  Processing reset word: [REDACTED]")
             
             # Check if this is a disable command (reset word + "end")
             if "end" in message_lower:
-                logger.info("  DISABLE command detected")
                 success = self._disable_dead_mans_switch(found_reset_word, contact_id)
                 if success:
                     self._send_confirmation(contact_id, "Dead man's switch has been permanently disabled.")
                 else:
                     self._send_confirmation(contact_id, "Failed to disable dead man's switch.")
             else:
-                logger.info("  RESET command detected")
                 success = self._reset_dead_mans_switch(found_reset_word, original_interval, contact_id)
                 if success:
                     self._send_confirmation(contact_id, "Dead man's switch has been reset and timer restarted.")
@@ -185,8 +158,6 @@ class DeadMansSwitch:
         Returns:
             bool: True if successful, False otherwise
         """
-        logger.info(f"*** DMS: DISABLING DEAD MAN'S SWITCH ***")
-        logger.info("  Reset word: [REDACTED]")
         
         return self._delete_messages_by_reset_word(reset_word)
     
@@ -201,19 +172,14 @@ class DeadMansSwitch:
         Returns:
             bool: True if successful, False otherwise
         """
-        logger.info(f"*** DMS: RESETTING DEAD MAN'S SWITCH ***")
-        logger.info("  Reset word: [REDACTED]")
-        logger.info(f"  Original interval: {original_interval_seconds} seconds")
         
         # First, get the original message content before deleting
         original_content = self._get_main_message_content(reset_word)
         if not original_content:
-            logger.error("  Could not find original main message content")
             return False
         
         # Delete existing messages
         if not self._delete_messages_by_reset_word(reset_word):
-            logger.error("  Failed to delete existing messages")
             return False
         
         # Reschedule with new timing
@@ -267,7 +233,6 @@ class DeadMansSwitch:
                 with open(messages_path, 'r') as f:
                     messages = json.load(f)
             except (FileNotFoundError, json.JSONDecodeError):
-                logger.info("  No messages file found")
                 return True
             
             # Filter out messages with matching reset word
@@ -279,7 +244,6 @@ class DeadMansSwitch:
                 if (msg.get('dead_mans_switch') and 
                     msg.get('reset_word', '').lower() == reset_word.lower()):
                     deleted_count += 1
-                    logger.info(f"  Deleting message: {msg.get('id')} - {msg.get('title')}")
                 else:
                     remaining_messages.append(msg)
             
@@ -287,8 +251,6 @@ class DeadMansSwitch:
             with open(messages_path, 'w') as f:
                 json.dump(remaining_messages, f, indent=2)
             
-            logger.info(f"  Deleted {deleted_count} messages with reset word [REDACTED]")
-            logger.info(f"  Remaining messages: {len(remaining_messages)}")
             
             return True
             
@@ -304,14 +266,10 @@ class DeadMansSwitch:
             message: Confirmation message text
         """
         try:
-            logger.info(f"  Sending confirmation to {contact_id}: {message}")
             # Add 1 second delay before responding
             time.sleep(1)
             result = send_message(contact_id, message)
             if result:
-                logger.info("  Confirmation sent successfully")
-            else:
-                logger.error("  Failed to send confirmation")
         except Exception as e:
             logger.error(f"Error sending confirmation: {e}")
 

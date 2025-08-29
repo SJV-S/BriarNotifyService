@@ -1,6 +1,6 @@
 # Briar Notify Service
 
-A notification service wrapper for the Briar headless API. Intended to run in the background and allow for integration with other apps using cli one-liners. Comes with a web GUI for managing contacts and basic message scheduling functionality. The goal is a foundation for sovereign and private notifications.
+A notification service wrapper for the Briar headless API. Intended to run in the background and allow for integration with other apps using cli one-liners. Comes with a web GUI for managing contacts and basic message scheduling functionality. The goal is a foundation for sovereign and private notifications without the VPN hassle. Connect to your Briar phone app or desktop GUI to get notifications.
 
 Built with help from Claude Code, but please don't assume that I "vibe coded" the whole thing with little effort. I can read code and this was a lot of work. The backend stuff in particular needed a lot of testing.
 
@@ -54,15 +54,14 @@ briar-notify send -c "Title" "Message"       # With confirmation
 # System monitoring
 briar-notify send "Alert" "Server $(hostname) is down"
 briar-notify send "Backup" "$(df -h / | awk 'NR==2{print $5}') disk usage"
-
-# Automation
-./script.sh || briar-notify send "Error" "Script failed"
 ```
 
 ## Notes
 
-- Security: The briar password and scheduled messages are stored in plain text. This security trade-off was necessary for systemd integration to ensure reliable uptime. Protect the server! The systemd integration can be declined during install if you don't want it, but then you'll need another way of ensuring reliable uptime.
+- Security: The briar password and scheduled messages are stored in plain text. This security trade-off was necessary for systemd integration to ensure reliable uptime. Protect the server!
 - Compatibility: Briar headless runs on port 7010 to avoid conflicts with the briar messaging app that uses port 7000. So you can run both at the same time. Contacts are however shared between the two, and you probably want to run this on a headless always-on server instead.
+- Systemd: The systemd integration can be declined during install if you don't want it, but then you'll need another way of ensuring reliable uptime.
+- JDK: Briar headless is quite specific about the JDK version it is compatible with, so I made the decision to bundle it. Downside: bloat. Upside: easier install.
 
 ## Acknowledgments
 

@@ -20,9 +20,6 @@ try:
     from internal_service.scheduler import get_scheduler
     from internal_service.dead_mans_switch import get_dead_mans_switch
 except ImportError as e:
-    print(f"Error importing internal services: {e}")
-    print("Make sure you're running from the correct directory")
-    print(f"Project root should be: {project_root}")
     sys.exit(1)
 
 
