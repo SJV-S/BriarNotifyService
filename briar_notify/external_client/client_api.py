@@ -3,12 +3,10 @@
 import json
 import time
 import sys
-import logging
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 
-logger = logging.getLogger(__name__)
 
 # Add project root to path so we can import internal_service as a package
 project_root = Path(__file__).parent.parent.parent

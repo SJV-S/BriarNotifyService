@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import json
-import logging
 import sys
 import time
 from datetime import datetime, timedelta
@@ -10,7 +9,6 @@ from internal_service.scheduler import get_scheduler
 from internal_service.briar_service import send_message, get_contacts
 from internal_service.service_config import BRIAR_NOTIFY_DIR
 
-logger = logging.getLogger(__name__)
 
 
 class DeadMansSwitch:
@@ -79,7 +77,6 @@ class DeadMansSwitch:
             return True
             
         except Exception as e:
-            logger.error(f"Failed to schedule dead man's switch: {e}")
             return False
     
     def process_incoming_message(self, contact_id: str, message_text: str, full_message_data: dict):
@@ -146,7 +143,6 @@ class DeadMansSwitch:
                     self._send_confirmation(contact_id, "Failed to reset dead man's switch.")
                         
         except Exception as e:
-            logger.error(f"Error processing incoming message for DMS: {e}")
     
     def _disable_dead_mans_switch(self, reset_word: str, contact_id: str) -> bool:
         """Permanently disable a dead man's switch by deleting all associated messages.
@@ -214,7 +210,6 @@ class DeadMansSwitch:
             return None
             
         except Exception as e:
-            logger.error(f"Error getting main message content: {e}")
             return None
     
     def _delete_messages_by_reset_word(self, reset_word: str) -> bool:
@@ -255,7 +250,6 @@ class DeadMansSwitch:
             return True
             
         except Exception as e:
-            logger.error(f"Error deleting messages by reset word: {e}")
             return False
     
     def _send_confirmation(self, contact_id: str, message: str):
@@ -271,7 +265,6 @@ class DeadMansSwitch:
             result = send_message(contact_id, message)
             if result:
         except Exception as e:
-            logger.error(f"Error sending confirmation: {e}")
 
 
 # Global instance

@@ -3,14 +3,12 @@
 import json
 import threading
 import time
-import logging
 import sys
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 from internal_service.service_config import BRIAR_NOTIFY_DIR, DEFAULT_BRIAR_PORT
 from internal_service.briar_service import get_contacts, send_message, broadcast_message
 
-logger = logging.getLogger(__name__)
 
 
 class MessageScheduler:
@@ -86,7 +84,6 @@ class MessageScheduler:
                 self.wake_event.wait(sleep_time)
                 self.wake_event.clear()
             except Exception as e:
-                logger.error(f"Scheduler error: {e}")
                 time.sleep(self.default_sleep_seconds)
     
     def _process_due_messages(self):
@@ -173,7 +170,6 @@ class MessageScheduler:
                 else:
                     
         except Exception as e:
-            logger.error(f"Error sending message {msg['id']}: {e}")
     
     def _get_sleep_time(self) -> float:
         try:
@@ -229,7 +225,6 @@ class MessageScheduler:
             return True
             
         except Exception as e:
-            logger.error(f"Error deleting messages by reset word: {e}")
             return False
 
 
