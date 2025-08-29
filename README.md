@@ -61,7 +61,7 @@ briar-notify send "Backup" "$(df -h / | awk 'NR==2{print $5}') disk usage"
 - Security: The briar password and scheduled messages are stored in plain text. This security trade-off was necessary for systemd integration to ensure reliable uptime. Protect the server!
 - Compatibility: Briar headless runs on port 7010 to avoid conflicts with the briar messaging app that uses port 7000. So you can run both at the same time. Contacts are however shared between the two, and you probably want to run this on a headless always-on server instead.
 - Systemd: The systemd integration can be declined during install if you don't want it, but then you'll need another way of ensuring reliable uptime.
-- JDK: Briar headless is quite specific about the JDK version it is compatible with, so I made the decision to bundle it with the app. Downside: bloat. Upside: easier install.
+- JDK: Briar headless is quite specific about the JDK version it is compatible with, so I made the decision to bundle it. Downside: bloat. Upside: easier install.
 
 ## Acknowledgments
 
