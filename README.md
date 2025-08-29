@@ -54,9 +54,6 @@ briar-notify send -c "Title" "Message"       # With confirmation
 # System monitoring
 briar-notify send "Alert" "Server $(hostname) is down"
 briar-notify send "Backup" "$(df -h / | awk 'NR==2{print $5}') disk usage"
-
-# Automation
-./script.sh || briar-notify send "Error" "Script failed"
 ```
 
 ## Notes
