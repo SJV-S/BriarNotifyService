@@ -10,7 +10,6 @@ from internal_service.briar_service import send_message, get_contacts
 from internal_service.service_config import BRIAR_NOTIFY_DIR
 
 
-
 class DeadMansSwitch:
     def __init__(self):
         self.scheduler = get_scheduler()
