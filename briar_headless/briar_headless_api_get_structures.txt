@@ -1,0 +1,28 @@
+# Briar Headless API GET Response Structures
+
+## GET /v1/contacts
+# HTTP Request: curl -H "Authorization: Bearer $TOKEN" http://localhost:7010/v1/contacts
+
+[
+  {
+    "connected": bool,
+    "contactId": int,
+    "author": {
+      "name": string,
+      "id": string,
+      "publicKey": string,
+      "formatVersion": int
+    },
+    "verified": bool,
+    "unreadCount": int,
+    "lastChatActivity": string,
+    "handshakePublicKey": string
+  }
+]
+
+## GET /v1/contacts/add/link
+# HTTP Request: curl -H "Authorization: Bearer $TOKEN" http://localhost:7010/v1/contacts/add/link
+
+{
+  "link": string
+}

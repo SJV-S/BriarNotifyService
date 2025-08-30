@@ -385,10 +385,10 @@ function displayContacts(contacts) {
         
         contactDiv.innerHTML = `
             <div class="contact-info">
-                <span class="contact-name">${contact.alias}</span>
+                <span class="contact-name">${contact.author.name}</span>
                 <div class="contact-right">
                     <span class="contact-status ${statusClass}">${statusText}</span>
-                    <button class="delete-contact-btn" onclick="deleteContact(${contact.contactId}, '${contact.alias}')" title="Delete Contact">×</button>
+                    <button class="delete-contact-btn" onclick="deleteContact(${contact.contactId}, '${contact.author.name}')" title="Delete Contact">×</button>
                 </div>
             </div>
         `;

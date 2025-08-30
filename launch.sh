@@ -89,3 +89,6 @@ nohup "$INSTALL_DIR/briar_notify/venv/bin/gunicorn" \
     web_ui.app:app &
 
 disown
+
+# Exit so terminal returns to prompt
+exit 0
