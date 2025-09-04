@@ -40,10 +40,18 @@ class JarMonitor:
         # Main monitoring loop - runs in background thread.
         while self.running:
             try:
+                # Check JAR process
                 if not identity_running():
                     self._restart_jar()
+                
+                # Check event listener
+                self._check_event_listener()
+                
             except Exception:
                 pass
+            
+            # Sleep before next check
+            time.sleep(self.check_interval_seconds)
 
                 
     def _restart_jar(self) -> bool:
@@ -64,6 +72,20 @@ class JarMonitor:
                 
         except Exception:
             return False
+    
+    def _check_event_listener(self):
+        # Check if event listener is running and restart if needed.
+        try:
+            # Import here to avoid circular imports
+            from internal_service.event_listener import _listener
+            
+            # Check if listener thread is alive
+            if not _listener._thread or not _listener._thread.is_alive():
+                print("[DEBUG] Event listener not running, restarting...")
+                _listener.start()
+                
+        except Exception as e:
+            print(f"[DEBUG] Error checking event listener: {e}")
 
 
 # Global monitor instance

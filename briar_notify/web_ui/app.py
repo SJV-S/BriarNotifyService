@@ -19,10 +19,13 @@ password_manager.load_password_into_memory()
 jar_monitor.start_monitoring()
 
 def _initialize_processes(password: str):
+    print("[DEBUG] _initialize_processes called")
     scheduler = get_scheduler()
     app.message_scheduler = scheduler
     password_manager.set_identity_password(password)
+    print("[DEBUG] About to call start_event_listener()")
     start_event_listener()
+    print("[DEBUG] start_event_listener() returned")
 
 
 def _cleanup_scheduler():
@@ -84,10 +87,13 @@ def dashboard():
             return redirect('/identity-setup-required')
     
     # Check if identity is running (includes password check)
+    print("[DEBUG] Checking if identity is running...")
     if not identity_running():
+        print("[DEBUG] Identity not running, starting Briar process...")
         # Try to start Briar with system password
         system_password = password_manager.identity_password
         if system_password:
+            print("[DEBUG] System password found, starting Briar...")
             # Kill any existing process first (don't waste time checking if running)
             logout_identity()
             time.sleep(1)  # Reduced from 3 seconds
@@ -96,14 +102,21 @@ def dashboard():
             proc = start_briar_process(system_password, DEFAULT_BRIAR_PORT)
             
             # Wait for Briar API to be ready
+            print("[DEBUG] Waiting for Briar to be ready...")
             if wait_for_briar_ready():
+                print("[DEBUG] Briar ready, calling _initialize_processes...")
                 _initialize_processes(system_password)
             else:
+                print("[DEBUG] Briar not ready, redirecting to identity setup")
                 # Could not start Briar - redirect to create new identity
                 return redirect('/identity-setup-required')
         else:
+            print("[DEBUG] No system password, redirecting to identity setup")
             # No system password available
             return redirect('/identity-setup-required')
+    else:
+        print("[DEBUG] Identity already running, calling _initialize_processes...")
+        _initialize_processes(password_manager.identity_password)
 
     # Get contact information
     contact_info = get_contact_info()

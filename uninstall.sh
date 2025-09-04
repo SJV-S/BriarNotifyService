@@ -58,28 +58,10 @@ else
 fi
 echo ""
 
-# Detect install directory
-script_dir="$(dirname "$0")"
-if [[ -d "$script_dir/briar_notify/internal_service" ]]; then
-    INSTALL_DIR="$script_dir"
-    IS_OPT_INSTALL=false
-else
-    INSTALL_DIR="/opt/briar-notify"
-    IS_OPT_INSTALL=true
-fi
-
 echo "Removing installation directory..."
-if [ -d "$INSTALL_DIR" ] && [ "$IS_OPT_INSTALL" = true ]; then
-    echo "   Removing $INSTALL_DIR..."
-    sudo rm -rf "$INSTALL_DIR"
-    echo "Removed $INSTALL_DIR"
-elif [ "$IS_OPT_INSTALL" = false ]; then
-    echo "   Local installation detected - cleaning up files..."
-    rm -rf "$INSTALL_DIR/briar_notify/venv" 2>/dev/null
-    echo "Removed virtual environment"
-else
-    echo "   Installation directory not found"
-fi
+echo "   Removing /opt/briar-notify..."
+sudo rm -rf "/opt/briar-notify"
+echo "Removed /opt/briar-notify"
 echo ""
 
 echo "User Data Removal"
@@ -120,7 +102,7 @@ echo ""
 echo "Briar Notify Service has been completely removed from your system."
 echo ""
 echo "What was removed:"
-echo "  - Application files from $INSTALL_DIR"
+echo "  - Application files from /opt/briar-notify"
 echo "  - Systemd service integration"
 echo "  - Command symlink from /usr/local/bin/briar-notify"
 if [[ "$USER_DATA_REMOVED" == "true" ]]; then

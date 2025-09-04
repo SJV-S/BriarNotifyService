@@ -17,24 +17,33 @@ class BriarEventListener:
     # --- internals ---
 
     def _run(self):
+        print(f"[DEBUG] Event listener starting, connecting to {self.url}")
+        
         def on_open(ws):
+            print("[DEBUG] WebSocket connection opened")
             try:
                 token = auth_manager.get_token()
                 if token:
+                    print("[DEBUG] Sending auth token")
                     ws.send(token)  # send token first
                 else:
+                    print("[DEBUG] No auth token, closing connection")
                     ws.close()
-            except Exception:
+            except Exception as e:
+                print(f"[DEBUG] Error in on_open: {e}")
                 ws.close()
 
         def on_event(ws, raw):
+            print(f"[DEBUG] Received event: {raw}")
             try:
                 evt = json.loads(raw)
-            except Exception:
+            except Exception as e:
+                print(f"[DEBUG] Error parsing event JSON: {e}")
                 return
 
             name = evt.get("name")
             data = evt.get("data") or {}
+            print(f"[DEBUG] Event name: {name}, data keys: {list(data.keys()) if data else 'None'}")
 
             event_handlers = {
                 "ContactConnectedEvent": lambda: self.on_contact_connected(data.get("contactId")),
@@ -50,8 +59,14 @@ class BriarEventListener:
             else:
                 self.on_other_event(name, data)
 
+        def on_error(ws, error):
+            print(f"[DEBUG] WebSocket error: {error}")
+        
+        def on_close(ws, close_status_code, close_msg):
+            print(f"[DEBUG] WebSocket closed: {close_status_code} - {close_msg}")
+
         websocket.WebSocketApp(
-            self.url, on_open=on_open, on_message=on_event
+            self.url, on_open=on_open, on_message=on_event, on_error=on_error, on_close=on_close
         ).run_forever(ping_interval=30, ping_timeout=10)
 
     def _handle_conversation_message(self, data):
@@ -107,7 +122,8 @@ class BriarEventListener:
 _listener = BriarEventListener()
 
 def start_event_listener():
-    if getattr(start_event_listener, "_started", False):
+    if _listener._thread and _listener._thread.is_alive():
+        print("[DEBUG] Event listener already started")
         return
-    start_event_listener._started = True
+    print("[DEBUG] Starting event listener for the first time")
     _listener.start()
